@@ -47,3 +47,17 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 
 ## Open items
 - None blocking. Supabase project must be created and URL + publishable key noted before Batch 1 testing.
+
+## Status
+- Batch 0: COMPLETE
+- Batch 1 (Foundation): code delivered, awaiting test result (/setup-check all green + npm run build OK)
+- Next: Batch 2 (Database and Security)
+
+## Batch 1 decisions
+- Tailwind CSS v4 via @tailwindcss/vite. No tailwind.config.ts or postcss.config.js; theme tokens are in src/index.css (@theme).
+- Colours: navy-900/800/700, brand (teal) 500/600/700. Font: Inter Variable (@fontsource-variable/inter).
+- Router: react-router-dom createBrowserRouter in src/app/router.tsx; route constants in src/app/routes.ts.
+- Supabase client: src/lib/supabaseClient.ts exports supabase, supabaseUrl, supabasePublishableKey, isSupabaseConfigured.
+- Helpers: src/lib/format.ts (formatINR, formatDate, formatDateTime, formatStatus), src/lib/constants.ts (APP_NAME, APP_TAGLINE, COPYRIGHT_TEXT, PARCEL_STATUSES).
+- Temporary pages: Home (stub), /setup-check (remove before final), NotFound.
+- Relative imports, no path alias.

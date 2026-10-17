@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Navy: navigation and headings */
+  --color-navy-950: #0a1222;
+  --color-navy-900: #0f1c34;
+  --color-navy-800: #162a4a;
+  --color-navy-700: #1f3a63;
+
+  /* Teal: brand accent */
+  --color-brand-50: #effaf9;
+  --color-brand-100: #d3f3f0;
+  --color-brand-500: #14a8a0;
+  --color-brand-600: #0e8f88;
+  --color-brand-700: #0c726d;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-slate-50 font-sans text-slate-800 antialiased;
+  }
+  h1, h2, h3 {
+    @apply text-navy-900 tracking-tight;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-600;
+  }
+}
