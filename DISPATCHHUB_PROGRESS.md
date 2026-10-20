@@ -161,4 +161,21 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Known gap: cash-on-pickup payments remain PENDING (add cash-collected step in Batch 6/7)
 - Database layer (Batch 2) is complete once the e2e test passes
 
+## Status
+- Batch 0, 1, 2 (2A-2D-3): COMPLETE (database done, e2e passed)
+- Batch 3 (Authentication): code delivered, awaiting test
+- Next: Batch 4 (Public website)
+
+## Batch 3 notes
+- Auth: src/services/authService.ts (signUp, signIn, signOut, getProfile). Role never sent on signup (DB trigger = CUSTOMER). Inactive accounts are signed out.
+- Context: src/context/authContext.ts (context + AuthContextValue), AuthProvider.tsx; hook src/hooks/useAuth.ts -> { session, user, profile, role, loading, signOut, refreshProfile }
+- Guards (src/app/guards.tsx): ProtectedRoute, RoleRoute(roles), PublicOnlyRoute, RoleHomeRedirect (/app). UX only; RLS/RPC enforce.
+- Navigation: src/lib/navigation.ts (ROLE_HOME, ROLE_LABEL, ROLE_NAV with ready flags; set ready:true when a page is built)
+- Route prefix per role: /app/customer, /app/delivery, /app/manager, /app/admin; sub-pages go under those prefixes (e.g. /app/customer/book)
+- UI: components/ui Button (variant, loading), Input (label, error, hint; forwardRef), Spinner/FullPageSpinner; layout AuthLayout, DashboardLayout (role sidebar, mobile drawer, sign out)
+- Schemas: src/schemas/auth.ts (loginSchema, registerSchema)
+- Errors: src/lib/errors.ts (AppError, friendlyAuthError, getErrorMessage)
+- Placeholder: pages/app/DashboardHome.tsx (shows RLS-limited parcel count) replaced per role in Batches 5, 7, 8, 9
+- Dev login buttons on /login only in import.meta.env.DEV
+
 

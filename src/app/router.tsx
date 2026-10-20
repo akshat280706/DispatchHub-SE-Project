@@ -1,11 +1,55 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { ROUTES } from './routes'
+import { ProtectedRoute, PublicOnlyRoute, RoleHomeRedirect, RoleRoute } from './guards'
+import { ROLE_HOME } from '../lib/navigation'
+import DashboardLayout from '../components/layout/DashboardLayout'
 import Home from '../pages/public/Home'
 import SetupCheck from '../pages/public/SetupCheck'
 import NotFound from '../pages/public/NotFound'
+import Login from '../pages/auth/Login'
+import Register from '../pages/auth/Register'
+import DashboardHome from '../pages/app/DashboardHome'
 
 export const router = createBrowserRouter([
   { path: ROUTES.home, element: <Home /> },
   { path: ROUTES.setupCheck, element: <SetupCheck /> },
+  {
+    element: <PublicOnlyRoute />,
+    children: [
+      { path: ROUTES.login, element: <Login /> },
+      { path: ROUTES.register, element: <Register /> },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      { path: '/app', element: <RoleHomeRedirect /> },
+      {
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: ROLE_HOME.CUSTOMER,
+            element: <RoleRoute roles={['CUSTOMER']} />,
+            children: [{ index: true, element: <DashboardHome /> }],
+          },
+          {
+            path: ROLE_HOME.DELIVERY_PERSONNEL,
+            element: <RoleRoute roles={['DELIVERY_PERSONNEL']} />,
+            children: [{ index: true, element: <DashboardHome /> }],
+          },
+          {
+            path: ROLE_HOME.BRANCH_MANAGER,
+            element: <RoleRoute roles={['BRANCH_MANAGER']} />,
+            children: [{ index: true, element: <DashboardHome /> }],
+          },
+          {
+            path: ROLE_HOME.ADMIN,
+            element: <RoleRoute roles={['ADMIN']} />,
+            children: [{ index: true, element: <DashboardHome /> }],
+          },
+        ],
+      },
+    ],
+  },
   { path: '*', element: <NotFound /> },
 ])
