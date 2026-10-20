@@ -106,3 +106,21 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Storage: private bucket delivery-proofs (5 MB, jpeg/png/webp). Path {parcel_id}/{filename}. Insert: assigned personnel only. Select: anyone who can_view_parcel. No update/delete.
 - Public tracking will be via RPC track_parcel() (2D), not table access.
 - In RPCs use search_path = public, extensions (pgcrypto lives in extensions schema).
+
+## Status
+- Batch 0, 1, 2A, 2B, 2C: COMPLETE
+- Batch 2D-1 (booking/tracking/payment RPCs + reference seed): SQL delivered, awaiting test
+- Next: 2D-2 (assign_parcel, update_parcel_status, start_delivery, get_dev_delivery_otp, verify_delivery, record_delivery_failure, update_complaint, stats RPCs, demo users + parcels)
+
+## Batch 2D-1 notes
+- Files: supabase/migrations/0004_rpc_booking_tracking_payments.sql, supabase/seed.sql
+- Internal helpers (no client EXECUTE): get_setting_numeric, notify_user, add_tracking_event (uses clock_timestamp), write_audit, generate_tracking_number
+- Client RPCs (authenticated): calculate_shipping_quote(origin, dest, category, weight, l, w, h), create_parcel_booking(payload jsonb, idempotency_key), cancel_parcel(parcel_id, reason) -> {id,status}
+- Public RPC (anon + authenticated): track_parcel(tracking_number) -> jsonb or null
+- Service-role only: apply_payment_result(payment_id, status SUCCESS|FAILED, provider, transaction_reference, failure_reason) idempotent
+- Booking payload keys: origin_branch_id, destination_branch_id, sender_name, sender_phone, pickup_address, receiver_name, receiver_phone, delivery_address, delivery_city, delivery_pincode, category, weight_kg, length_cm, width_cm, height_cm, description, special_instructions, payment_method (ONLINE|DEV_SIMULATED|CASH_ON_PICKUP)
+- Pricing: zone by branch city/state; charge = base + ceil_0.5(weight - base_weight) * per_kg + handling; GST from settings (18%)
+- Seed: 6 branches (MUM01, MUM02, PUN01, DEL01, BLR01, AMD01), 18 rates, 12 settings incl. dev.show_delivery_otp
+- Cash on pickup => CONFIRMED at booking. Online/dev => CONFIRMED by apply_payment_result.
+- Any new RPC must have explicit revoke/grant execute lines.
+
