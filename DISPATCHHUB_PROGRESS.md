@@ -178,4 +178,19 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Placeholder: pages/app/DashboardHome.tsx (shows RLS-limited parcel count) replaced per role in Batches 5, 7, 8, 9
 - Dev login buttons on /login only in import.meta.env.DEV
 
+## Status
+- Batch 0, 1, 2, 3: COMPLETE
+- Batch 4 (Public website): code delivered, awaiting test
+- Next: Batch 5 (Customer module: dashboard, booking, pricing, history, cancellation)
+
+## Batch 4 notes
+- Public routes under PublicLayout (Navbar + Footer): /, /about, /services, /track, /track/:trackingNumber, /contact, /privacy, /terms. Login/Register and /setup-check stay outside it.
+- routes.ts adds trackRoute(n). trackingService: track(n) -> track_parcel RPC (null if none), normalizeTrackingNumber, isValidTrackingNumber.
+- contactService.send inserts into contact_messages (no .select(); anon cannot read).
+- usePublicSettings() reads public system_settings (contact.*, tax.gst_percent, booking.max_weight_kg, delivery.estimate_days.*); helpers settingText, settingNumber.
+- UI added: StatusBadge (any status string), TrackingTimeline (newest first), TrackForm, PageHeader, LegalDocument, Navbar, Footer, PublicLayout.
+- types/database.ts now exports ParcelStatus; types/tracking.ts has PublicTracking, TrackingEvent.
+- Home "Book a parcel" links to /register (or role dashboard). Change to /app/customer/book in Batch 5.
+- Privacy/Terms are labelled editable placeholders; no compliance claims.
+
 

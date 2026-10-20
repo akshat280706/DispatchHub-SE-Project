@@ -1,4 +1,3 @@
-// Central route map (matches the Batch 0 contract)
 export const ROUTES = {
   home: '/',
   about: '/about',
@@ -11,3 +10,5 @@ export const ROUTES = {
   register: '/register',
   setupCheck: '/setup-check',
 } as const
+
+export const trackRoute = (trackingNumber: string) => `/track/${encodeURIComponent(trackingNumber)}`

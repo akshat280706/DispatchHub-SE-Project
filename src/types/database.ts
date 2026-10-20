@@ -16,3 +16,16 @@ export interface Profile {
   created_at: string
   updated_at: string
 }
+
+export type ParcelStatus =
+  | 'BOOKED'
+  | 'CONFIRMED'
+  | 'ASSIGNED'
+  | 'PICKED_UP'
+  | 'IN_TRANSIT'
+  | 'AT_DESTINATION_BRANCH'
+  | 'OUT_FOR_DELIVERY'
+  | 'DELIVERED'
+  | 'DELIVERY_FAILED'
+  | 'RETURNED'
+  | 'CANCELLED'

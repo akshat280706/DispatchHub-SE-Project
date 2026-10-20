@@ -3,7 +3,14 @@ import { ROUTES } from './routes'
 import { ProtectedRoute, PublicOnlyRoute, RoleHomeRedirect, RoleRoute } from './guards'
 import { ROLE_HOME } from '../lib/navigation'
 import DashboardLayout from '../components/layout/DashboardLayout'
+import PublicLayout from '../components/layout/PublicLayout'
 import Home from '../pages/public/Home'
+import About from '../pages/public/About'
+import Services from '../pages/public/Services'
+import TrackParcel from '../pages/public/TrackParcel'
+import Contact from '../pages/public/Contact'
+import Privacy from '../pages/public/Privacy'
+import Terms from '../pages/public/Terms'
 import SetupCheck from '../pages/public/SetupCheck'
 import NotFound from '../pages/public/NotFound'
 import Login from '../pages/auth/Login'
@@ -11,7 +18,19 @@ import Register from '../pages/auth/Register'
 import DashboardHome from '../pages/app/DashboardHome'
 
 export const router = createBrowserRouter([
-  { path: ROUTES.home, element: <Home /> },
+  {
+    element: <PublicLayout />,
+    children: [
+      { path: ROUTES.home, element: <Home /> },
+      { path: ROUTES.about, element: <About /> },
+      { path: ROUTES.services, element: <Services /> },
+      { path: ROUTES.track, element: <TrackParcel /> },
+      { path: `${ROUTES.track}/:trackingNumber`, element: <TrackParcel /> },
+      { path: ROUTES.contact, element: <Contact /> },
+      { path: ROUTES.privacy, element: <Privacy /> },
+      { path: ROUTES.terms, element: <Terms /> },
+    ],
+  },
   { path: ROUTES.setupCheck, element: <SetupCheck /> },
   {
     element: <PublicOnlyRoute />,
