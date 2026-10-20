@@ -91,3 +91,18 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - No cascade deletes except notifications -> profiles
 
 
+## Status
+- Batch 0, 1, 2A, 2B: COMPLETE
+- Batch 2C (RLS + grants + storage bucket): SQL delivered, awaiting test
+- Next: 2D (RPC functions + seed data)
+
+## Batch 2C notes
+- File: supabase/migrations/0003_rls_and_storage.sql
+- Grants: revoke all from anon/authenticated, then explicit grants. NEW TABLES NEED EXPLICIT GRANTS.
+- No client writes on: parcels, tracking_events, delivery_assignments, payments, delivery_verifications (no grants at all), delivery_proofs, audit_logs.
+- Direct client writes allowed: profiles (own; trigger protects role/branch/is_active/email), notifications.is_read (own), complaints INSERT (own parcel, status OPEN), contact_messages INSERT (anon ok), admin-only on branches/shipping_rates/system_settings.
+- Helpers: is_manager_of_parcel, is_assigned_to_parcel (ACTIVE or COMPLETED), owns_parcel, can_view_parcel, can_upload_proof (DELIVERY assignment ACTIVE + parcel OUT_FOR_DELIVERY), try_uuid.
+- complaints.complaint_number set by trigger (CMP-YYMMDD-XXXX); client value ignored.
+- Storage: private bucket delivery-proofs (5 MB, jpeg/png/webp). Path {parcel_id}/{filename}. Insert: assigned personnel only. Select: anyone who can_view_parcel. No update/delete.
+- Public tracking will be via RPC track_parcel() (2D), not table access.
+- In RPCs use search_path = public, extensions (pgcrypto lives in extensions schema).
