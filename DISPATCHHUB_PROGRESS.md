@@ -124,3 +124,22 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Cash on pickup => CONFIRMED at booking. Online/dev => CONFIRMED by apply_payment_result.
 - Any new RPC must have explicit revoke/grant execute lines.
 
+## Status
+- Batch 0, 1, 2A, 2B, 2C, 2D-1: COMPLETE
+- Batch 2D-2 (assignment/status/OTP/verification/complaint RPCs): SQL delivered, awaiting test
+- Next: 2D-3 (stats RPCs get_customer_stats/get_personnel_stats/get_branch_stats/get_admin_stats, demo staff + demo parcels, full end-to-end SQL test)
+
+## Batch 2D-2 notes
+- File: supabase/migrations/0005_rpc_delivery_complaints.sql
+- Added column delivery_verifications.dev_otp (plain OTP only while setting dev.show_delivery_otp = true; cleared on success/failure; no client grants)
+- Internal helpers (no client EXECUTE): get_setting_bool, notify_branch_managers
+- Client RPCs (authenticated):
+  - assign_parcel(parcel_id, personnel_id, type PICKUP|DELIVERY, reason) -> assignment row. Reason required to reassign. PICKUP allowed at CONFIRMED/ASSIGNED (origin manager), DELIVERY at AT_DESTINATION_BRANCH/OUT_FOR_DELIVERY/DELIVERY_FAILED (destination manager). Admin any. PICKUP at CONFIRMED -> ASSIGNED.
+  - update_parcel_status(parcel_id, new_status, note, location_note): only ASSIGNED>PICKED_UP (assigned pickup person/admin), PICKED_UP>IN_TRANSIT (origin mgr), IN_TRANSIT>AT_DESTINATION_BRANCH (dest mgr), DELIVERY_FAILED>RETURNED (dest mgr, note required). DELIVERED rejected.
+  - start_delivery(parcel_id): assigned DELIVERY person only; AT_DESTINATION_BRANCH/DELIVERY_FAILED -> OUT_FOR_DELIVERY; creates OTP (hash + expiry + max attempts from settings)
+  - get_dev_delivery_otp(parcel_id): owner only, dev mode only -> {otp, expires_at, attempts_left, notice} or null
+  - register_delivery_proof(parcel_id, storage_path, proof_type) -> proof id (file must exist in bucket delivery-proofs under {parcel_id}/)
+  - verify_delivery(parcel_id, otp, proof_ids[]) -> {verified:true,status} | {verified:false,attempts_left}; errors for expired/locked/missing proof (if delivery.require_photo)
+  - record_delivery_failure(parcel_id, reason) -> DELIVERY_FAILED; reason stored in location_note (not public)
+  - update_complaint(complaint_id, status, notes): OPEN>IN_REVIEW>RESOLVED(notes required)>CLOSED, RESOLVED>IN_REVIEW allowed; notifies customer
+- Upload flow for frontend (Batch 7): upload file to storage path {parcel_id}/{uuid}.jpg, then call register_delivery_proof, then pass returned ids to verify_delivery.
