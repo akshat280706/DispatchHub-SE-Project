@@ -75,3 +75,19 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Added system_settings.is_public (for anon-readable keys)
 - Constraint: staff roles require branch_id
 - Git: branch b2-database
+
+
+## Status
+- Batch 0, 1, 2A: COMPLETE
+- Batch 2B (parcels, tracking_events, delivery_assignments, payments, delivery_verifications, delivery_proofs, complaints, notifications, audit_logs, contact_messages): SQL delivered, awaiting test
+- Next: 2C (RLS + storage), 2D (RPC functions + seed)
+
+## Batch 2B notes
+- File: supabase/migrations/0002_operational_tables.sql
+- parcels CHECKs: total = charge + tax; CANCELLED needs cancelled_reason; DELIVERED <=> delivered_at set
+- Unique: parcels(customer_id, idempotency_key); one ACTIVE assignment per (parcel, type); one SUCCESS payment per parcel; payments(provider, transaction_reference)
+- delivery_verifications has is_active (partial unique per parcel); new OTP row per attempt cycle
+- tracking_events and audit_logs blocked from UPDATE/DELETE by trigger block_modification()
+- No cascade deletes except notifications -> profiles
+
+
