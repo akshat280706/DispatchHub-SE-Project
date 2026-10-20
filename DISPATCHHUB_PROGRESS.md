@@ -61,3 +61,17 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Helpers: src/lib/format.ts (formatINR, formatDate, formatDateTime, formatStatus), src/lib/constants.ts (APP_NAME, APP_TAGLINE, COPYRIGHT_TEXT, PARCEL_STATUSES).
 - Temporary pages: Home (stub), /setup-check (remove before final), NotFound.
 - Relative imports, no path alias.
+
+
+## Status
+- Batch 0, 1: COMPLETE
+- Batch 2A (enums, branches, profiles, system_settings, shipping_rates, helpers, signup trigger): SQL delivered, awaiting test
+- Next: 2B (parcels, tracking_events, assignments, payments, verifications, proofs, complaints, notifications, audit_logs, contact_messages), 2C (RLS + storage), 2D (RPC functions + seed)
+
+## Batch 2A notes
+- File: supabase/migrations/0001_enums_core_tables.sql (run in SQL Editor)
+- Helpers: current_user_role(), current_branch_id(), is_admin() (SECURITY DEFINER)
+- Triggers: set_updated_at, handle_new_user (always CUSTOMER), protect_profile_columns (blocks role/branch/is_active/email changes by non-admins)
+- Added system_settings.is_public (for anon-readable keys)
+- Constraint: staff roles require branch_id
+- Git: branch b2-database
