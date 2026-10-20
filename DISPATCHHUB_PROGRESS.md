@@ -143,3 +143,22 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
   - record_delivery_failure(parcel_id, reason) -> DELIVERY_FAILED; reason stored in location_note (not public)
   - update_complaint(complaint_id, status, notes): OPEN>IN_REVIEW>RESOLVED(notes required)>CLOSED, RESOLVED>IN_REVIEW allowed; notifies customer
 - Upload flow for frontend (Batch 7): upload file to storage path {parcel_id}/{uuid}.jpg, then call register_delivery_proof, then pass returned ids to verify_delivery.
+
+## Status
+- Batch 0, 1, 2A, 2B, 2C, 2D-1, 2D-2: COMPLETE
+- Batch 2D-3 (stats RPCs, demo staff, demo parcels, e2e test): delivered, awaiting test (e2e report must say ALL STEPS PASSED)
+- Next: merge b2-database PR, then Batch 3 (Authentication)
+
+## Batch 2D-3 notes
+- Files: supabase/migrations/0006_stats_functions.sql, supabase/seed_demo_staff.sql, supabase/seed_demo_parcels.sql, supabase/tests/e2e_parcel_journey.sql
+- Stats RPCs (authenticated, role-checked; dates in Asia/Kolkata, default last 30 days, max 366):
+  - get_customer_stats() -> total_bookings, active_shipments, delivered, cancelled, open_complaints, unread_notifications
+  - get_personnel_stats() -> assigned_total, pending_pickups, pending_deliveries, out_for_delivery, completed_pickups, completed_deliveries, completed_today
+  - get_branch_stats(from, to, branch_id[admin only]) -> branch, from, to, parcel_count, by_status{}, pending_assignments, in_transit, delayed, personnel[{id,full_name,is_available,active_assignments}], complaints{status:n}, daily[{date,bookings}]
+  - get_admin_stats(from, to) -> users{total,active,by_role}, parcels{total,active,delivered,cancelled,delayed,in_range,by_status}, payments{success/pending/failed/refunded counts+amounts}, branches[{code,name,city,origin_parcels,destination_parcels,active_parcels}], complaints{status:n}, daily[{date,bookings,revenue}]
+- Demo accounts (password Test@12345, dev only): admin@, manager.mum@ (MUM01), manager.pun@ (PUN01), rider.mum@ (MUM01), rider.pun@ (PUN01), customer@ (all @dispatchhub.test)
+- Demo parcels: 8 via idempotency keys demo-seed-001..008 (BOOKED, CONFIRMED, ASSIGNED, IN_TRANSIT+delayed, AT_DESTINATION_BRANCH, OUT_FOR_DELIVERY, DELIVERED, CANCELLED+refunded) + 2 complaints
+- Known gap: cash-on-pickup payments remain PENDING (add cash-collected step in Batch 6/7)
+- Database layer (Batch 2) is complete once the e2e test passes
+
+
