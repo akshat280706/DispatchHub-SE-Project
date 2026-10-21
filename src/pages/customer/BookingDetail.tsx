@@ -12,6 +12,8 @@ import CancelParcelDialog from '../../components/domain/CancelParcelDialog'
 import { CATEGORY_LABEL, PAYMENT_METHOD_LABEL, ZONE_LABEL, customerRoutes } from '../../lib/parcel'
 import { trackRoute } from '../../app/routes'
 import { formatDate, formatDateTime, formatINR } from '../../lib/format'
+import DeliveryCodeCard from '../../components/domain/DeliveryCodeCard'
+
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -123,6 +125,7 @@ export default function BookingDetail() {
         <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-800">Cancelled: {parcel.cancelled_reason}</p>
       )}
 
+      {parcel.status === 'OUT_FOR_DELIVERY' && <DeliveryCodeCard parcelId={parcel.id} />}
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
           <section className="rounded-lg border border-slate-200 bg-white p-5">
@@ -217,11 +220,16 @@ export default function BookingDetail() {
                 ))}
               </ul>
             )}
-            {latestPayment?.status === 'PENDING' && latestPayment.method === 'DEV_SIMULATED' && parcel.status === 'BOOKED' && (
-              <p className="mt-4 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                Payment is pending. The development payment screen (no real money) is added in the next stage of the project, so
-                this booking stays pending for now.
-              </p>
+            {parcel.status === 'BOOKED' && !payments.some((pm) => pm.status === 'SUCCESS') && (
+              <div className="mt-4 rounded-md bg-amber-50 px-3 py-3 text-xs text-amber-900">
+                <p>Payment is pending. Development payment: no real money is processed.</p>
+                <Link
+                  to={customerRoutes.pay(parcel.id)}
+                  className="mt-2 inline-flex rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
+                >
+                  Pay now
+                </Link>
+              </div>
             )}
             {latestPayment?.status === 'PENDING' && latestPayment.method === 'CASH_ON_PICKUP' && (
               <p className="mt-4 rounded-md bg-slate-100 px-3 py-2 text-xs text-slate-700">

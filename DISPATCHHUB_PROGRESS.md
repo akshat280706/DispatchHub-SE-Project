@@ -227,3 +227,15 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Open items for later: pay screen for pending DEV_SIMULATED payments (Batch 6), customer complaint pages (Batch 8), notifications page (Batch 10).
 
 
+## Status
+- Batch 0 to 5: COMPLETE
+- Batch 6 (Payments): code delivered, awaiting test
+- Next: Batch 7 (Delivery personnel module)
+
+## Batch 6 notes
+- Migration 0007_payment_functions.sql: create_payment_attempt(parcel_id) -> uuid (customer; returns existing PENDING DEV_SIMULATED or creates one; BOOKED parcels only); mark_cash_collected(parcel_id) (assigned pickup rider, origin manager, admin; PENDING CASH_ON_PICKUP -> SUCCESS, provider 'cash', ref CASH-xxxx). Both authenticated-only.
+- Edge Function supabase/functions/dev-payment-simulate: needs secret DEV_PAYMENTS_ENABLED=true; checks caller JWT + payment ownership (RLS), then service-role apply_payment_result(provider 'dev'). Deployed with: npx supabase functions deploy dev-payment-simulate
+- Frontend: services/paymentService.ts (ensureAttempt, simulate), services/deliveryService.ts (getDevOtp), pages/customer/PayBooking.tsx (route /app/customer/bookings/:id/pay), components/domain/DeliveryCodeCard.tsx (shown on BookingDetail when OUT_FOR_DELIVERY). customerRoutes.pay(id).
+- Not built: Razorpay (verify-payment, razorpay-webhook, create-payment-order). create-payment-order replaced by DB function create_payment_attempt. Optional in Batch 10 if test keys exist.
+- Cash collected UI: rider in Batch 7, manager in Batch 8.
+

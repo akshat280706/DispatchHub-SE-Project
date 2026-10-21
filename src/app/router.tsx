@@ -21,6 +21,7 @@ import BookParcel from '../pages/customer/BookParcel'
 import BookingDetail from '../pages/customer/BookingDetail'
 import MyBookings from '../pages/customer/MyBookings'
 import Profile from '../pages/customer/Profile'
+import PayBooking from '../pages/customer/PayBooking'
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
               { path: 'book', element: <BookParcel /> },
               { path: 'bookings', element: <MyBookings /> },
               { path: 'bookings/:id', element: <BookingDetail /> },
+              { path: 'bookings/:id/pay', element: <PayBooking /> },
               { path: 'profile', element: <Profile /> },
             ],
           },
