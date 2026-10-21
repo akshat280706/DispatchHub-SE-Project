@@ -194,3 +194,19 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Privacy/Terms are labelled editable placeholders; no compliance claims.
 
 
+
+## Status
+- Batch 0 to 4: COMPLETE
+- Batch 5A (dashboard, booking form + live quote, booking detail): code delivered, awaiting test
+- Next: Batch 5B (My bookings list with search/filter/pagination, cancel, profile)
+
+## Batch 5A notes
+- Routes (inside RoleRoute CUSTOMER): /app/customer (CustomerDashboard), /app/customer/book (BookParcel), /app/customer/bookings/:id (BookingDetail). customerRoutes helper in src/lib/parcel.ts (dashboard, book, bookings, booking(id)).
+- Types: database.ts now has ParcelCategory, RateZone, PaymentMethod, PaymentStatus, NotificationType, Paged<T>, Branch, Parcel, Payment, AppNotification. api.ts: Quote, QuoteInput, BookingPayload, CustomerStats.
+- Services: branchService.listActive(); parcelService { quote, book(payload, idempotencyKey), listRecent(limit), getById(id) -> ParcelDetail|null }; reportService.customer(); notificationService.listRecent(limit).
+- lib/rpc.ts rpcError(error, fallback): shows DB messages only for codes 22023/42501/28000/P0002/40001.
+- Hooks: useAsyncData(key, loader) -> {data,error,loading,reload}; useDebounce(value, ms).
+- UI added: Select, Textarea, StatCard, EmptyState, CostBreakdown (domain). StatusBadge now has payment tones.
+- Booking: strings-only zod schema (schemas/booking.ts), different origin/destination required, payment methods offered: DEV_SIMULATED, CASH_ON_PICKUP. One idempotency key (crypto.randomUUID) per form visit.
+- Detail page hides staff notes (location_note not selected). Payment pending note for dev payments until Batch 6.
+- Nav: 'Book parcel' ready; 'My bookings' (/app/customer/bookings), Complaints, Notifications, Profile still disabled.

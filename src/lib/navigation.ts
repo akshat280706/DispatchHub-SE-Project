@@ -23,7 +23,7 @@ export const ROLE_LABEL: Record<UserRole, string> = {
 export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   CUSTOMER: [
     { label: 'Dashboard', to: '/app/customer', ready: true },
-    { label: 'Book parcel', to: '/app/customer/book', ready: false },
+    { label: 'Book parcel', to: '/app/customer/book', ready: true },
     { label: 'My bookings', to: '/app/customer/bookings', ready: false },
     { label: 'Complaints', to: '/app/customer/complaints', ready: false },
     { label: 'Notifications', to: '/app/customer/notifications', ready: false },

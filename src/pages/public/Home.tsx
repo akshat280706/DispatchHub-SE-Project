@@ -30,7 +30,11 @@ const BENEFITS = [
 
 export default function Home() {
   const { profile } = useAuth()
-  const bookTo = profile ? ROLE_HOME[profile.role] : ROUTES.register
+    const bookTo = profile
+    ? profile.role === 'CUSTOMER'
+      ? '/app/customer/book'
+      : ROLE_HOME[profile.role]
+    : ROUTES.register
 
   return (
     <>

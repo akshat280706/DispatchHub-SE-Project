@@ -12,6 +12,10 @@ const TONES: Record<string, string> = {
   DELIVERY_FAILED: 'bg-amber-50 text-amber-800 ring-amber-600/20',
   RETURNED: 'bg-amber-50 text-amber-800 ring-amber-600/20',
   CANCELLED: 'bg-red-50 text-red-700 ring-red-600/20',
+  SUCCESS: 'bg-emerald-50 text-emerald-800 ring-emerald-600/20',
+  PENDING: 'bg-amber-50 text-amber-800 ring-amber-600/20',
+  FAILED: 'bg-red-50 text-red-700 ring-red-600/20',
+  REFUNDED: 'bg-slate-100 text-slate-700 ring-slate-500/20',
 }
 
 export default function StatusBadge({ status }: { status: string }) {

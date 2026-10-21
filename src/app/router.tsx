@@ -16,6 +16,9 @@ import NotFound from '../pages/public/NotFound'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 import DashboardHome from '../pages/app/DashboardHome'
+import CustomerDashboard from '../pages/customer/CustomerDashboard'
+import BookParcel from '../pages/customer/BookParcel'
+import BookingDetail from '../pages/customer/BookingDetail'
 
 export const router = createBrowserRouter([
   {
@@ -49,7 +52,11 @@ export const router = createBrowserRouter([
           {
             path: ROLE_HOME.CUSTOMER,
             element: <RoleRoute roles={['CUSTOMER']} />,
-            children: [{ index: true, element: <DashboardHome /> }],
+            children: [
+              { index: true, element: <CustomerDashboard /> },
+              { path: 'book', element: <BookParcel /> },
+              { path: 'bookings/:id', element: <BookingDetail /> },
+            ],
           },
           {
             path: ROLE_HOME.DELIVERY_PERSONNEL,
