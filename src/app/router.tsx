@@ -19,6 +19,8 @@ import DashboardHome from '../pages/app/DashboardHome'
 import CustomerDashboard from '../pages/customer/CustomerDashboard'
 import BookParcel from '../pages/customer/BookParcel'
 import BookingDetail from '../pages/customer/BookingDetail'
+import MyBookings from '../pages/customer/MyBookings'
+import Profile from '../pages/customer/Profile'
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +57,9 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <CustomerDashboard /> },
               { path: 'book', element: <BookParcel /> },
+              { path: 'bookings', element: <MyBookings /> },
               { path: 'bookings/:id', element: <BookingDetail /> },
+              { path: 'profile', element: <Profile /> },
             ],
           },
           {

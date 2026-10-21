@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabaseClient'
 import { AppError } from '../lib/errors'
 import { rpcError } from '../lib/rpc'
-import type { Branch, Parcel, Payment } from '../types/database'
+import type { Branch, Paged, Parcel, ParcelStatus, Payment } from '../types/database'
 import type { BookingPayload, Quote, QuoteInput } from '../types/api'
 import type { TrackingEvent } from '../types/tracking'
 
@@ -9,6 +9,17 @@ export type ParcelSummary = Pick<
   Parcel,
   'id' | 'tracking_number' | 'status' | 'total_amount' | 'created_at' | 'origin_branch_id' | 'destination_branch_id'
 >
+
+export type ParcelListItem = ParcelSummary & Pick<Parcel, 'receiver_name' | 'delivery_city'>
+
+export interface ParcelFilters {
+  search: string
+  status: ParcelStatus | ''
+  from: string // yyyy-mm-dd, India time
+  to: string // yyyy-mm-dd, India time
+  page: number
+  pageSize: number
+}
 
 export interface ParcelDetail {
   parcel: Parcel
@@ -41,6 +52,11 @@ async function book(payload: BookingPayload, idempotencyKey: string): Promise<Pa
   return data as Parcel
 }
 
+async function cancel(id: string, reason: string): Promise<void> {
+  const { error } = await supabase.rpc('cancel_parcel', { p_parcel_id: id, p_reason: reason })
+  if (error) throw rpcError(error, 'This booking could not be cancelled. Please try again.')
+}
+
 async function listRecent(limit = 5): Promise<ParcelSummary[]> {
   const { data, error } = await supabase
     .from('parcels')
@@ -49,6 +65,36 @@ async function listRecent(limit = 5): Promise<ParcelSummary[]> {
     .limit(limit)
   if (error) throw new AppError('Could not load your bookings.', error.code)
   return (data ?? []) as ParcelSummary[]
+}
+
+// Row Level Security limits this to the signed-in customer's own parcels.
+async function listMine(filters: ParcelFilters): Promise<Paged<ParcelListItem>> {
+  const { page, pageSize } = filters
+  let q = supabase
+    .from('parcels')
+    .select(
+      'id,tracking_number,status,total_amount,created_at,origin_branch_id,destination_branch_id,receiver_name,delivery_city',
+      { count: 'exact' },
+    )
+
+  // Keep only safe characters so the term cannot break the filter syntax.
+  const term = filters.search.replace(/[^A-Za-z0-9 .-]/g, '').trim()
+  if (term) q = q.or(`tracking_number.ilike.%${term}%,receiver_name.ilike.%${term}%`)
+  if (filters.status) q = q.eq('status', filters.status)
+  if (filters.from) q = q.gte('created_at', new Date(`${filters.from}T00:00:00+05:30`).toISOString())
+  if (filters.to) q = q.lte('created_at', new Date(`${filters.to}T23:59:59.999+05:30`).toISOString())
+
+  const start = (page - 1) * pageSize
+  const { data, count, error } = await q
+    .order('created_at', { ascending: false })
+    .range(start, start + pageSize - 1)
+
+  if (error) {
+    // Asking for a page past the end: show an empty page instead of an error
+    if (error.code === 'PGRST103') return { data: [], total: 0, page, pageSize }
+    throw new AppError('Could not load your bookings.', error.code)
+  }
+  return { data: (data ?? []) as ParcelListItem[], total: count ?? 0, page, pageSize }
 }
 
 // Returns null when the parcel does not exist or is not visible to this user (Row Level Security).
@@ -93,4 +139,4 @@ async function getById(id: string): Promise<ParcelDetail | null> {
   }
 }
 
-export const parcelService = { quote, book, listRecent, getById }
+export const parcelService = { quote, book, cancel, listRecent, listMine, getById }

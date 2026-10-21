@@ -24,7 +24,7 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   CUSTOMER: [
     { label: 'Dashboard', to: '/app/customer', ready: true },
     { label: 'Book parcel', to: '/app/customer/book', ready: true },
-    { label: 'My bookings', to: '/app/customer/bookings', ready: false },
+    { label: 'My bookings', to: '/app/customer/bookings', ready: true },
     { label: 'Complaints', to: '/app/customer/complaints', ready: false },
     { label: 'Notifications', to: '/app/customer/notifications', ready: false },
     { label: 'Profile', to: '/app/customer/profile', ready: false },

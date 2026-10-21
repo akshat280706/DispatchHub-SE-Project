@@ -210,3 +210,20 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Booking: strings-only zod schema (schemas/booking.ts), different origin/destination required, payment methods offered: DEV_SIMULATED, CASH_ON_PICKUP. One idempotency key (crypto.randomUUID) per form visit.
 - Detail page hides staff notes (location_note not selected). Payment pending note for dev payments until Batch 6.
 - Nav: 'Book parcel' ready; 'My bookings' (/app/customer/bookings), Complaints, Notifications, Profile still disabled.
+
+
+## Status
+- Batch 0 to 4, 5A: COMPLETE
+- Batch 5B (My bookings, cancel, profile): code delivered, awaiting test
+- Next: Batch 6 (Payments and tracking: dev payment flow, pay screen, cash collected step)
+
+## Batch 5B notes
+- New routes under /app/customer: bookings (MyBookings), profile (Profile). customerRoutes.profile added.
+- parcelService now: quote, book, cancel(id, reason), listRecent, listMine(filters: {search,status,from,to,page,pageSize}) -> Paged<ParcelListItem>, getById. Search = tracking_number or receiver_name ilike (sanitised). Dates interpreted in India time (+05:30).
+- profileService.update(userId, ProfileInput) updates only name/phone/address/city/state/pincode; role/branch/is_active/email blocked by DB trigger.
+- UI added: Modal (Escape + overlay close), Pagination, domain/CancelParcelDialog. Cancel button on BookingDetail only for BOOKED/CONFIRMED (DB rule is the real enforcement).
+- Schemas: schemas/profile.ts.
+- Still disabled in customer nav: Complaints, Notifications.
+- Open items for later: pay screen for pending DEV_SIMULATED payments (Batch 6), customer complaint pages (Batch 8), notifications page (Batch 10).
+
+

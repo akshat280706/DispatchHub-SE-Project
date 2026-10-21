@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 import { useAsyncData } from '../../hooks/useAsyncData'
@@ -6,6 +7,8 @@ import { parcelService } from '../../services/parcelService'
 import StatusBadge from '../../components/ui/StatusBadge'
 import Spinner from '../../components/ui/Spinner'
 import TrackingTimeline from '../../components/domain/TrackingTimeline'
+import Button from '../../components/ui/Button'
+import CancelParcelDialog from '../../components/domain/CancelParcelDialog'
 import { CATEGORY_LABEL, PAYMENT_METHOD_LABEL, ZONE_LABEL, customerRoutes } from '../../lib/parcel'
 import { trackRoute } from '../../app/routes'
 import { formatDate, formatDateTime, formatINR } from '../../lib/format'
@@ -27,7 +30,8 @@ export default function BookingDetail() {
   const justBooked = Boolean((location.state as { justBooked?: boolean } | null)?.justBooked)
   const validId = UUID.test(id)
 
-  const { data, error, loading } = useAsyncData(`parcel:${id}`, async () => (validId ? parcelService.getById(id) : null))
+  const { data, error, loading, reload } = useAsyncData(`parcel:${id}`, async () => (validId ? parcelService.getById(id) : null))
+  const [cancelOpen, setCancelOpen] = useState(false)
 
   const back = (
     <Link to={customerRoutes.dashboard} className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:underline">
@@ -94,6 +98,21 @@ export default function BookingDetail() {
         </div>
         <div className="flex flex-col items-end gap-2">
           <StatusBadge status={parcel.status} />
+          {(parcel.status === 'BOOKED' || parcel.status === 'CONFIRMED') && (
+            <Button variant="secondary" onClick={() => setCancelOpen(true)}>
+              Cancel booking
+            </Button>
+          )}
+          <CancelParcelDialog
+            open={cancelOpen}
+            parcelId={parcel.id}
+            trackingNumber={parcel.tracking_number}
+            onClose={() => setCancelOpen(false)}
+            onCancelled={() => {
+              setCancelOpen(false)
+              reload()
+            }}
+          />
           <Link to={trackRoute(parcel.tracking_number)} className="text-sm font-medium text-brand-700 hover:underline">
             Open public tracking page
           </Link>
