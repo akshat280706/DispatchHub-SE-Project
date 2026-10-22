@@ -61,3 +61,17 @@ export interface PersonnelStats {
   completed_deliveries: number
   completed_today: number
 }
+
+export interface BranchStats {
+  branch: { id: string; code: string; name: string; city: string }
+  from: string
+  to: string
+  parcel_count: number
+  by_status: Record<string, number>
+  pending_assignments: number
+  in_transit: number
+  delayed: number
+  personnel: { id: string; full_name: string; is_available: boolean; active_assignments: number }[]
+  complaints: Record<string, number>
+  daily: { date: string; bookings: number }[]
+}

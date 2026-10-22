@@ -267,3 +267,18 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Wrong OTP returns verified:false (attempt counted). Locked/expired -> error text; rider records failure then start_delivery again for a new code.
 - Not built: signature proof, real SMS/email OTP, proof deletion (no delete policy by design).
 
+## Status
+- Batch 0 to 7: COMPLETE
+- Batch 8A (manager dashboard, parcels, work queue, parcel actions): code delivered, awaiting test
+- Next: Batch 8B (personnel monitoring, complaints incl. customer complaint pages, branch reports with charts)
+
+## Batch 8A notes
+- No new SQL. Uses assign_parcel, update_parcel_status, cancel_parcel, mark_cash_collected, get_branch_stats.
+- Routes (RoleRoute BRANCH_MANAGER): /app/manager (ManagerDashboard), /parcels (ManagerParcels), /parcels/:id (ManagerParcelDetail), /assign (WorkQueue). managerRoutes in src/lib/manager.ts (also personnel, complaints, reports for 8B).
+- reportService.branch(from?, to?) -> BranchStats (type in api.ts). Managers always get own branch.
+- managerService: listParcels(filters {search,status,page,pageSize}), getQueue(branchId) -> {pickups, dispatch, arrivals, deliveries}, getDetail(id) (includes staff notes via location_note, assignments with rider names, payments), listPersonnel(), assign(parcelId, personnelId, type, reason), updateStatus(parcelId, status, note).
+- UI: domain/AssignDialog (reason required when reassigning), domain/ReasonDialog (return / cancel).
+- Manager actions on detail page: assign/reassign pickup (origin, CONFIRMED/ASSIGNED), dispatch PICKED_UP>IN_TRANSIT (origin), confirm arrival IN_TRANSIT>AT_DESTINATION_BRANCH (dest), assign/reassign delivery (dest), return DELIVERY_FAILED>RETURNED (dest, note), cancel BOOKED/CONFIRMED/ASSIGNED, record cash (origin). The database enforces every rule.
+- Nav: Parcels, Assign ready. Personnel, Complaints, Reports still disabled until 8B.
+- Gaps: DEL01/BLR01 have no manager or riders; only one rider per demo branch (Batch 9 staff creation).
+

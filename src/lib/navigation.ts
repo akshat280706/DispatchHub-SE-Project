@@ -36,8 +36,8 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   ],
   BRANCH_MANAGER: [
     { label: 'Dashboard', to: '/app/manager', ready: true },
-    { label: 'Parcels', to: '/app/manager/parcels', ready: false },
-    { label: 'Assign', to: '/app/manager/assign', ready: false },
+    { label: 'Parcels', to: '/app/manager/parcels', ready: true },
+    { label: 'Assign', to: '/app/manager/assign', ready: true },
     { label: 'Personnel', to: '/app/manager/personnel', ready: false },
     { label: 'Complaints', to: '/app/manager/complaints', ready: false },
     { label: 'Reports', to: '/app/manager/reports', ready: false },

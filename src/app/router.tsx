@@ -26,6 +26,10 @@ import DeliveryDashboard from '../pages/delivery/DeliveryDashboard'
 import Assignments from '../pages/delivery/Assignments'
 import AssignmentDetail from '../pages/delivery/AssignmentDetail'
 import DeliveryHistory from '../pages/delivery/DeliveryHistory'
+import ManagerDashboard from '../pages/manager/ManagerDashboard'
+import ManagerParcels from '../pages/manager/ManagerParcels'
+import ManagerParcelDetail from '../pages/manager/ManagerParcelDetail'
+import WorkQueue from '../pages/manager/WorkQueue'
 
 export const router = createBrowserRouter([
   {
@@ -81,7 +85,12 @@ export const router = createBrowserRouter([
           {
             path: ROLE_HOME.BRANCH_MANAGER,
             element: <RoleRoute roles={['BRANCH_MANAGER']} />,
-            children: [{ index: true, element: <DashboardHome /> }],
+            children: [
+              { index: true, element: <ManagerDashboard /> },
+              { path: 'parcels', element: <ManagerParcels /> },
+              { path: 'parcels/:id', element: <ManagerParcelDetail /> },
+              { path: 'assign', element: <WorkQueue /> },
+            ],
           },
           {
             path: ROLE_HOME.ADMIN,
