@@ -22,6 +22,9 @@ import BookingDetail from '../pages/customer/BookingDetail'
 import MyBookings from '../pages/customer/MyBookings'
 import Profile from '../pages/customer/Profile'
 import PayBooking from '../pages/customer/PayBooking'
+import DeliveryDashboard from '../pages/delivery/DeliveryDashboard'
+import Assignments from '../pages/delivery/Assignments'
+import AssignmentDetail from '../pages/delivery/AssignmentDetail'
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +70,11 @@ export const router = createBrowserRouter([
           {
             path: ROLE_HOME.DELIVERY_PERSONNEL,
             element: <RoleRoute roles={['DELIVERY_PERSONNEL']} />,
-            children: [{ index: true, element: <DashboardHome /> }],
+            children: [
+              { index: true, element: <DeliveryDashboard /> },
+              { path: 'assignments', element: <Assignments /> },
+              { path: 'assignments/:id', element: <AssignmentDetail /> },
+            ],
           },
           {
             path: ROLE_HOME.BRANCH_MANAGER,

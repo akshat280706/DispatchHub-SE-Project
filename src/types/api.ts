@@ -51,3 +51,13 @@ export interface CustomerStats {
   open_complaints: number
   unread_notifications: number
 }
+
+export interface PersonnelStats {
+  assigned_total: number
+  pending_pickups: number
+  pending_deliveries: number
+  out_for_delivery: number
+  completed_pickups: number
+  completed_deliveries: number
+  completed_today: number
+}

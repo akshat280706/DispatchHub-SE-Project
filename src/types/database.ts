@@ -116,3 +116,7 @@ export interface AppNotification {
   created_at: string
 }
 
+export type AssignmentType = 'PICKUP' | 'DELIVERY'
+export type AssignmentStatus = 'ACTIVE' | 'COMPLETED' | 'REASSIGNED' | 'CANCELLED'
+
+

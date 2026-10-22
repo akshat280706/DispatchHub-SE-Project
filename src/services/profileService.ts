@@ -20,4 +20,10 @@ async function update(userId: string, input: ProfileInput): Promise<void> {
   if (error) throw new AppError('Your profile could not be saved. Please try again.', error.code)
 }
 
-export const profileService = { update }
+// Delivery personnel can mark themselves available or unavailable for new assignments.
+async function setAvailability(userId: string, isAvailable: boolean): Promise<void> {
+  const { error } = await supabase.from('profiles').update({ is_available: isAvailable }).eq('id', userId)
+  if (error) throw new AppError('Your availability could not be updated. Please try again.', error.code)
+}
+
+export const profileService = { update, setAvailability }

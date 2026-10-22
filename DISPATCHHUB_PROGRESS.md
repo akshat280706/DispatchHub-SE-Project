@@ -239,3 +239,17 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Not built: Razorpay (verify-payment, razorpay-webhook, create-payment-order). create-payment-order replaced by DB function create_payment_attempt. Optional in Batch 10 if test keys exist.
 - Cash collected UI: rider in Batch 7, manager in Batch 8.
 
+## Status
+- Batch 0 to 6: COMPLETE
+- Batch 7A (rider dashboard, assignments, pickup, cash, start delivery): code delivered, awaiting test
+- Next: Batch 7B (photo upload, OTP verification, failed delivery, history)
+
+## Batch 7A notes
+- Migration 0008_rider_cash_due.sql: get_cash_due(parcel_id) -> {payment_id, amount} | null (assigned pickup rider only).
+- Routes (RoleRoute DELIVERY_PERSONNEL): /app/delivery (DeliveryDashboard), /app/delivery/assignments (Assignments), /app/delivery/assignments/:id (AssignmentDetail, id = delivery_assignments.id). deliveryRoutes + ASSIGNMENT_TYPE_LABEL in src/lib/delivery.ts.
+- deliveryService: getDevOtp, listActive(type), getAssignment(id) (embeds parcel via parcel:parcels(...)), getCashDue, markPickedUp, startDelivery, markCashCollected. Types AssignmentItem, AssignmentParcel, CashDue.
+- reportService.personnel(); profileService.setAvailability(userId, bool) (is_available is not protected by the profile trigger).
+- types: AssignmentType, AssignmentStatus in database.ts; PersonnelStats in api.ts.
+- Nav: Assignments ready; History still disabled until 7B.
+- Detail page actions: Mark picked up (ASSIGNED), Record cash collected (cash due), Start delivery (AT_DESTINATION_BRANCH / DELIVERY_FAILED). OUT_FOR_DELIVERY shows a 7B placeholder.
+
