@@ -22,6 +22,7 @@ import BookingDetail from '../pages/customer/BookingDetail'
 import MyBookings from '../pages/customer/MyBookings'
 import Profile from '../pages/customer/Profile'
 import PayBooking from '../pages/customer/PayBooking'
+import CustomerComplaints from '../pages/customer/CustomerComplaints'
 import DeliveryDashboard from '../pages/delivery/DeliveryDashboard'
 import Assignments from '../pages/delivery/Assignments'
 import AssignmentDetail from '../pages/delivery/AssignmentDetail'
@@ -30,6 +31,9 @@ import ManagerDashboard from '../pages/manager/ManagerDashboard'
 import ManagerParcels from '../pages/manager/ManagerParcels'
 import ManagerParcelDetail from '../pages/manager/ManagerParcelDetail'
 import WorkQueue from '../pages/manager/WorkQueue'
+import ManagerPersonnel from '../pages/manager/ManagerPersonnel'
+import ManagerComplaints from '../pages/manager/ManagerComplaints'
+import ManagerReports from '../pages/manager/ManagerReports'
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +73,7 @@ export const router = createBrowserRouter([
               { path: 'bookings', element: <MyBookings /> },
               { path: 'bookings/:id', element: <BookingDetail /> },
               { path: 'bookings/:id/pay', element: <PayBooking /> },
+              { path: 'complaints', element: <CustomerComplaints /> },
               { path: 'profile', element: <Profile /> },
             ],
           },
@@ -90,6 +95,9 @@ export const router = createBrowserRouter([
               { path: 'parcels', element: <ManagerParcels /> },
               { path: 'parcels/:id', element: <ManagerParcelDetail /> },
               { path: 'assign', element: <WorkQueue /> },
+              { path: 'personnel', element: <ManagerPersonnel /> },
+              { path: 'complaints', element: <ManagerComplaints /> },
+              { path: 'reports', element: <ManagerReports /> },
             ],
           },
           {

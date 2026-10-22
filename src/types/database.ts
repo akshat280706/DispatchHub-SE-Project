@@ -119,4 +119,5 @@ export interface AppNotification {
 export type AssignmentType = 'PICKUP' | 'DELIVERY'
 export type AssignmentStatus = 'ACTIVE' | 'COMPLETED' | 'REASSIGNED' | 'CANCELLED'
 
+export type ComplaintStatus = 'OPEN' | 'IN_REVIEW' | 'RESOLVED' | 'CLOSED'
 

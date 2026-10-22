@@ -30,6 +30,7 @@ export const customerRoutes = {
   book: '/app/customer/book',
   bookings: '/app/customer/bookings',
   profile: '/app/customer/profile',
+  complaints: '/app/customer/complaints',
   booking: (id: string) => `/app/customer/bookings/${id}`,
   pay: (id: string) => `/app/customer/bookings/${id}/pay`,
 }

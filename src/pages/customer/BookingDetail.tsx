@@ -118,6 +118,9 @@ export default function BookingDetail() {
           <Link to={trackRoute(parcel.tracking_number)} className="text-sm font-medium text-brand-700 hover:underline">
             Open public tracking page
           </Link>
+          <Link to={`${customerRoutes.complaints}?parcel=${parcel.id}`} className="text-sm font-medium text-brand-700 hover:underline">
+            Raise a complaint
+          </Link>
         </div>
       </div>
 

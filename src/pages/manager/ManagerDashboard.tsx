@@ -101,8 +101,9 @@ export default function ManagerDashboard() {
                   ))}
                 </ul>
               )}
-              <p className="mt-3 text-xs text-slate-500">Complaint handling arrives in the next part.</p>
-            </section>
+              <Link to={managerRoutes.complaints} className="mt-3 inline-block text-sm font-medium text-brand-700 hover:underline">
+                Review complaints
+              </Link>            </section>
           </div>
         </>
       )}

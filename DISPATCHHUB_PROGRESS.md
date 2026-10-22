@@ -282,3 +282,19 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Nav: Parcels, Assign ready. Personnel, Complaints, Reports still disabled until 8B.
 - Gaps: DEL01/BLR01 have no manager or riders; only one rider per demo branch (Batch 9 staff creation).
 
+## Status
+- Batch 0 to 7, 8A: COMPLETE
+- Batch 8B (complaints, personnel, branch reports): code delivered, awaiting test
+- Next: Batch 9 (Administrator module), to be split 9A/9B
+
+## Batch 8B notes
+- No new SQL. Uses update_complaint, get_branch_stats, complaints INSERT policy.
+- complaintService: listMine/listForReview(filters {status,page,pageSize}) -> Paged<ComplaintItem> (RLS decides scope), create(customerId, input) -> complaint_number, update(id, status, notes). Reuse for admin in Batch 9.
+- personnelService.overview() -> PersonnelOverview[] (manager's branch riders, active assignments, completed count).
+- Customer route /app/customer/complaints (CustomerComplaints, supports ?parcel=<id>); customerRoutes.complaints.
+- Manager routes: /app/manager/personnel (ManagerPersonnel), /complaints (ManagerComplaints, review dialog with lifecycle buttons), /reports (ManagerReports, Recharts line + bar charts, date range).
+- Schemas: schemas/complaint.ts. Types: ComplaintStatus in database.ts. StatusBadge has OPEN/IN_REVIEW/RESOLVED/CLOSED tones.
+- Nav ready: customer Complaints; manager Personnel, Complaints, Reports. Customer Notifications still disabled (Batch 10).
+- Gaps: no notification to managers on new complaint (optional trigger); managers cannot see customer names.
+
+
