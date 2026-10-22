@@ -253,3 +253,17 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Nav: Assignments ready; History still disabled until 7B.
 - Detail page actions: Mark picked up (ASSIGNED), Record cash collected (cash due), Start delivery (AT_DESTINATION_BRANCH / DELIVERY_FAILED). OUT_FOR_DELIVERY shows a 7B placeholder.
 
+## Status
+- Batch 0 to 6, 7A: COMPLETE
+- Batch 7B (photo proof, OTP verification, failed attempts, history): code delivered, awaiting test
+- Next: Batch 8 (Branch manager module), to be split 8A/8B
+
+## Batch 7B notes
+- No new SQL. Uses register_delivery_proof, verify_delivery, record_delivery_failure.
+- lib/image.ts: prepareProofImage(file) validates JPEG/PNG/WebP, resizes to max 1600px JPEG, rejects > 5 MB.
+- deliveryService additions: uploadProof(parcelId, file) (upload to bucket delivery-proofs at {parcel_id}/{uuid}.ext then register_delivery_proof), listProofs(parcelId, userId) (signed URLs, 5 min), verifyDelivery(parcelId, otp, proofIds) -> {verified, attempts_left?}, recordFailure(parcelId, reason), listHistory(filters {type,from,to,page,pageSize}) -> Paged<AssignmentItem> (COMPLETED only).
+- components/domain/DeliveryVerification.tsx (photo + code + 'Could not deliver' modal), shown on AssignmentDetail when assignment ACTIVE DELIVERY and parcel OUT_FOR_DELIVERY.
+- pages/delivery/DeliveryHistory.tsx at /app/delivery/history. Nav History ready.
+- Wrong OTP returns verified:false (attempt counted). Locked/expired -> error text; rider records failure then start_delivery again for a new code.
+- Not built: signature proof, real SMS/email OTP, proof deletion (no delete policy by design).
+

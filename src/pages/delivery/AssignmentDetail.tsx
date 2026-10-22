@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 import { useAsyncData } from '../../hooks/useAsyncData'
 import { deliveryService } from '../../services/deliveryService'
 import StatusBadge from '../../components/ui/StatusBadge'
 import Spinner from '../../components/ui/Spinner'
 import Button from '../../components/ui/Button'
+import DeliveryVerification from '../../components/domain/DeliveryVerification'
 import { ASSIGNMENT_TYPE_LABEL, deliveryRoutes } from '../../lib/delivery'
 import { CATEGORY_LABEL } from '../../lib/parcel'
 import { formatDateTime, formatINR } from '../../lib/format'
@@ -69,6 +70,7 @@ export default function AssignmentDetail() {
   const canPickUp = isActive && isPickup && parcel.status === 'ASSIGNED'
   const canStart = isActive && !isPickup && (parcel.status === 'AT_DESTINATION_BRANCH' || parcel.status === 'DELIVERY_FAILED')
   const outForDelivery = isActive && !isPickup && parcel.status === 'OUT_FOR_DELIVERY'
+  const deliveredDone = !isPickup && parcel.status === 'DELIVERED'
 
   async function run(action: () => Promise<void>) {
     setBusy(true)
@@ -101,7 +103,12 @@ export default function AssignmentDetail() {
         </div>
         <div className="flex flex-col items-end gap-2">
           <StatusBadge status={parcel.status} />
-          {!isActive && <span className="text-xs text-slate-500">Assignment {item.status.toLowerCase()}</span>}
+          {!isActive && (
+            <span className="text-xs text-slate-500">
+              Assignment {item.status.toLowerCase()}
+              {item.completed_at ? ` on ${formatDateTime(item.completed_at)}` : ''}
+            </span>
+          )}
         </div>
       </div>
 
@@ -111,7 +118,13 @@ export default function AssignmentDetail() {
         </p>
       )}
 
-      {(canPickUp || canStart || outForDelivery || cash) && (
+      {deliveredDone && (
+        <div role="status" className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-900">
+          <CheckCircle2 className="h-5 w-5" aria-hidden="true" /> Delivered and verified.
+        </div>
+      )}
+
+      {(canPickUp || canStart || cash) && (
         <section className="space-y-3 rounded-lg border border-brand-600/30 bg-brand-50 p-5">
           <h2 className="text-base font-semibold">Actions</h2>
 
@@ -145,14 +158,11 @@ export default function AssignmentDetail() {
               </Button>
             </div>
           )}
-
-          {outForDelivery && (
-            <p className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-900">
-              This parcel is out for delivery. Photo proof, code verification and failed-attempt recording are added in the next
-              part (7B).
-            </p>
-          )}
         </section>
+      )}
+
+      {outForDelivery && (
+        <DeliveryVerification parcelId={parcel.id} trackingNumber={parcel.tracking_number} onChanged={reload} />
       )}
 
       <section className="rounded-lg border border-slate-200 bg-white p-5">

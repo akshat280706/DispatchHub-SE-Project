@@ -32,7 +32,7 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   DELIVERY_PERSONNEL: [
     { label: 'Dashboard', to: '/app/delivery', ready: true },
     { label: 'Assignments', to: '/app/delivery/assignments', ready: true },
-    { label: 'History', to: '/app/delivery/history', ready: false },
+    { label: 'History', to: '/app/delivery/history', ready: true },
   ],
   BRANCH_MANAGER: [
     { label: 'Dashboard', to: '/app/manager', ready: true },

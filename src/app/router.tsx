@@ -25,6 +25,7 @@ import PayBooking from '../pages/customer/PayBooking'
 import DeliveryDashboard from '../pages/delivery/DeliveryDashboard'
 import Assignments from '../pages/delivery/Assignments'
 import AssignmentDetail from '../pages/delivery/AssignmentDetail'
+import DeliveryHistory from '../pages/delivery/DeliveryHistory'
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,7 @@ export const router = createBrowserRouter([
               { index: true, element: <DeliveryDashboard /> },
               { path: 'assignments', element: <Assignments /> },
               { path: 'assignments/:id', element: <AssignmentDetail /> },
+              { path: 'history', element: <DeliveryHistory /> },
             ],
           },
           {
