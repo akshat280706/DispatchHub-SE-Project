@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm, useWatch } from 'react-hook-form'
-import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../../hooks/useAuth'
 import { useAsyncData } from '../../hooks/useAsyncData'
@@ -67,7 +66,7 @@ export default function BookParcel() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<BookingFormInput>({
-    resolver: zodResolver(bookingSchema) as unknown as Resolver<BookingFormInput>,
+    resolver: zodResolver(bookingSchema),
     defaultValues: {
       origin_branch_id: '',
       destination_branch_id: '',
