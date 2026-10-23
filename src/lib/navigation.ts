@@ -44,7 +44,7 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   ],
   ADMIN: [
     { label: 'Dashboard', to: '/app/admin', ready: true },
-    { label: 'Users', to: '/app/admin/users', ready: false },
+    { label: 'Users', to: '/app/admin/users', ready: true },
     { label: 'Branches', to: '/app/admin/branches', ready: false },
     { label: 'Shipping rates', to: '/app/admin/rates', ready: false },
     { label: 'Settings', to: '/app/admin/settings', ready: false },

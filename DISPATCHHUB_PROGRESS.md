@@ -298,3 +298,18 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Gaps: no notification to managers on new complaint (optional trigger); managers cannot see customer names.
 
 
+## Status
+- Batch 0 to 8: COMPLETE
+- Batch 9A (admin dashboard, user management, staff creation): code delivered, awaiting test
+- Next: Batch 9B (branches, shipping rates, settings, audit logs, admin complaints, system reports)
+
+## Batch 9A notes
+- Migration 0009_admin_user_management.sql: admin_update_user(user_id, role, branch_id, is_active) -> {id, role, unchanged}. Admin only; cannot change own role/active; staff roles need an active branch (customer/admin get null branch); blocks changes to a rider with ACTIVE assignments; writes audit log USER_UPDATED.
+- Edge Function admin-create-user (deploy: npx supabase functions deploy admin-create-user): caller must be active ADMIN; validates fields; auth.admin.createUser (email_confirm true), then service-role update of profile role/branch/phone; deletes the auth user if profile update fails; inserts audit USER_CREATED. No new secret.
+- Frontend: lib/admin.ts (adminRoutes for all admin pages, ROLE_OPTIONS, needsBranch), schemas/user.ts (createStaffSchema), services/adminService.ts (listUsers(filters {search,role,status,page,pageSize}), updateUser, createStaff), reportService.admin(from,to) and branch(from,to,branchId), types AdminStats in api.ts.
+- Pages: pages/admin/AdminDashboard.tsx (stats, payment summary, charts, branch table, date range), AdminUsers.tsx (list, filters, edit dialog, create staff dialog).
+- Router: ADMIN children index AdminDashboard, users AdminUsers. pages/app/DashboardHome.tsx is no longer used (can delete).
+- Nav: admin Users ready; Branches, Rates, Settings, Complaints, Audit, Reports disabled until 9B.
+- Demo staff to create in Test 4: manager.del, rider.del, manager.blr, rider.blr, rider2.mum (@dispatchhub.test, Test@12345).
+- Gaps: no change/forgot password screen (plan for Batch 10).
+

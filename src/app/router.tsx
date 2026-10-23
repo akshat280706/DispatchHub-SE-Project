@@ -15,7 +15,6 @@ import SetupCheck from '../pages/public/SetupCheck'
 import NotFound from '../pages/public/NotFound'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
-import DashboardHome from '../pages/app/DashboardHome'
 import CustomerDashboard from '../pages/customer/CustomerDashboard'
 import BookParcel from '../pages/customer/BookParcel'
 import BookingDetail from '../pages/customer/BookingDetail'
@@ -34,6 +33,8 @@ import WorkQueue from '../pages/manager/WorkQueue'
 import ManagerPersonnel from '../pages/manager/ManagerPersonnel'
 import ManagerComplaints from '../pages/manager/ManagerComplaints'
 import ManagerReports from '../pages/manager/ManagerReports'
+import AdminDashboard from '../pages/admin/AdminDashboard'
+import AdminUsers from '../pages/admin/AdminUsers'
 
 export const router = createBrowserRouter([
   {
@@ -103,7 +104,10 @@ export const router = createBrowserRouter([
           {
             path: ROLE_HOME.ADMIN,
             element: <RoleRoute roles={['ADMIN']} />,
-            children: [{ index: true, element: <DashboardHome /> }],
+            children: [
+              { index: true, element: <AdminDashboard /> },
+              { path: 'users', element: <AdminUsers /> },
+            ],
           },
         ],
       },

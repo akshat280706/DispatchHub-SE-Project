@@ -75,3 +75,37 @@ export interface BranchStats {
   complaints: Record<string, number>
   daily: { date: string; bookings: number }[]
 }
+export interface AdminStats {
+  from: string
+  to: string
+  users: { total: number; active: number; by_role: Record<string, number> }
+  parcels: {
+    total: number
+    active: number
+    delivered: number
+    cancelled: number
+    delayed: number
+    in_range: number
+    by_status: Record<string, number>
+  }
+  payments: {
+    success_count: number
+    success_amount: number
+    pending_count: number
+    pending_amount: number
+    failed_count: number
+    refunded_count: number
+    refunded_amount: number
+  }
+  branches: {
+    id: string
+    code: string
+    name: string
+    city: string
+    origin_parcels: number
+    destination_parcels: number
+    active_parcels: number
+  }[]
+  complaints: Record<string, number>
+  daily: { date: string; bookings: number; revenue: number }[]
+}
