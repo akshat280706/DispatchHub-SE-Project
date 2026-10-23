@@ -45,11 +45,11 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
   ADMIN: [
     { label: 'Dashboard', to: '/app/admin', ready: true },
     { label: 'Users', to: '/app/admin/users', ready: true },
-    { label: 'Branches', to: '/app/admin/branches', ready: false },
-    { label: 'Shipping rates', to: '/app/admin/rates', ready: false },
-    { label: 'Settings', to: '/app/admin/settings', ready: false },
-    { label: 'Complaints', to: '/app/admin/complaints', ready: false },
-    { label: 'Audit logs', to: '/app/admin/audit', ready: false },
-    { label: 'Reports', to: '/app/admin/reports', ready: false },
+    { label: 'Branches', to: '/app/admin/branches', ready: true },
+    { label: 'Shipping rates', to: '/app/admin/rates', ready: true },
+    { label: 'Settings', to: '/app/admin/settings', ready: true },
+    { label: 'Complaints', to: '/app/admin/complaints', ready: true },
+    { label: 'Audit logs', to: '/app/admin/audit', ready: true },
+    { label: 'Reports', to: '/app/admin/reports', ready: true },
   ],
 }

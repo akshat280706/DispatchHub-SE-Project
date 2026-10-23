@@ -313,3 +313,17 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Demo staff to create in Test 4: manager.del, rider.del, manager.blr, rider.blr, rider2.mum (@dispatchhub.test, Test@12345).
 - Gaps: no change/forgot password screen (plan for Batch 10).
 
+## Status
+- Batch 0 to 8, 9A: COMPLETE
+- Batch 9B (branches, rates, settings, audit, admin complaints, system reports): code delivered, awaiting test
+- Next: Batch 10 (notifications page, change/forgot password, search/filter polish, remaining integrations, optional Razorpay test mode)
+
+## Batch 9B notes
+- Migration 0010_admin_config.sql: admin_upsert_branch(id,code,name,city,state,address,pincode,phone,is_active), admin_upsert_rate(id,zone,category,base_charge,base_weight_kg,per_kg_charge,handling_surcharge,is_active), admin_update_setting(key,value jsonb). All admin-only, validated, audited (BRANCH_CREATED/UPDATED, RATE_CREATED/UPDATED, SETTING_UPDATED). Branch deactivation blocked by active staff or in-progress parcels. Settings are edit-only, per-key validation.
+- Hardening: INSERT/UPDATE revoked from authenticated on branches, shipping_rates, system_settings. Those tables now change only through the RPCs. SELECT policies unchanged.
+- Frontend: services/adminConfigService.ts (listBranches, saveBranch, listRates, saveRate, listSettings, updateSetting, listAudit(filters {entity,action,from,to,page,pageSize})), schemas/adminConfig.ts (branchSchema, rateSchema), ui/ActiveBadge.
+- Pages (all under /app/admin): branches (AdminBranches), rates (AdminRates, warns about missing active zone/category), settings (AdminSettings), complaints (AdminComplaints = ManagerComplaints system), audit (AdminAudit), reports (AdminReports, branch drill-down + CSV).
+- ManagerComplaints now takes optional prop system.
+- Nav: every admin item ready.
+- Gaps: no create/delete of settings, no rate history, no change/forgot password.
+

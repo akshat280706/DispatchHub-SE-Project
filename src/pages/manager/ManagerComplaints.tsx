@@ -108,8 +108,7 @@ function ReviewDialog({ item, onClose, onChanged }: ReviewDialogProps) {
   )
 }
 
-export default function ManagerComplaints() {
-  const [status, setStatus] = useState<ComplaintStatus | ''>('')
+export default function ManagerComplaints({ system = false }: { system?: boolean }) {  const [status, setStatus] = useState<ComplaintStatus | ''>('')
   const [page, setPage] = useState(1)
   const [selected, setSelected] = useState<ComplaintItem | null>(null)
   const list = useAsyncData(`manager-complaints:${status}:${page}`, () =>
@@ -120,8 +119,9 @@ export default function ManagerComplaints() {
     <div className="mx-auto max-w-5xl space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Complaints</h1>
-        <p className="mt-1 text-sm text-slate-600">Complaints about parcels that start or end at your branch.</p>
-      </div>
+        <p className="mt-1 text-sm text-slate-600">
+          {system ? 'Complaints from every branch.' : 'Complaints about parcels that start or end at your branch.'}
+        </p>      </div>
 
       <div className="max-w-xs">
         <Select

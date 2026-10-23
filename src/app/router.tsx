@@ -35,6 +35,12 @@ import ManagerComplaints from '../pages/manager/ManagerComplaints'
 import ManagerReports from '../pages/manager/ManagerReports'
 import AdminDashboard from '../pages/admin/AdminDashboard'
 import AdminUsers from '../pages/admin/AdminUsers'
+import AdminBranches from '../pages/admin/AdminBranches'
+import AdminRates from '../pages/admin/AdminRates'
+import AdminSettings from '../pages/admin/AdminSettings'
+import AdminComplaints from '../pages/admin/AdminComplaints'
+import AdminAudit from '../pages/admin/AdminAudit'
+import AdminReports from '../pages/admin/AdminReports'
 
 export const router = createBrowserRouter([
   {
@@ -107,6 +113,12 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <AdminDashboard /> },
               { path: 'users', element: <AdminUsers /> },
+              { path: 'branches', element: <AdminBranches /> },
+              { path: 'rates', element: <AdminRates /> },
+              { path: 'settings', element: <AdminSettings /> },
+              { path: 'complaints', element: <AdminComplaints /> },
+              { path: 'audit', element: <AdminAudit /> },
+              { path: 'reports', element: <AdminReports /> },
             ],
           },
         ],
