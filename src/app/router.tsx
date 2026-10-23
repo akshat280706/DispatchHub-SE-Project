@@ -11,7 +11,6 @@ import TrackParcel from '../pages/public/TrackParcel'
 import Contact from '../pages/public/Contact'
 import Privacy from '../pages/public/Privacy'
 import Terms from '../pages/public/Terms'
-import SetupCheck from '../pages/public/SetupCheck'
 import NotFound from '../pages/public/NotFound'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
@@ -62,7 +61,6 @@ export const router = createBrowserRouter([
       { path: ROUTES.terms, element: <Terms /> },
     ],
   },
-  { path: ROUTES.setupCheck, element: <SetupCheck /> },
   // The emailed reset link signs the user in, so this page must NOT be inside PublicOnlyRoute
   { path: ROUTES.resetPassword, element: <ResetPassword /> },
   {

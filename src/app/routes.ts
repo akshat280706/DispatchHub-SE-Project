@@ -10,7 +10,6 @@ export const ROUTES = {
   register: '/register',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
-  setupCheck: '/setup-check',
 } as const
 
 export const trackRoute = (trackingNumber: string) => `/track/${encodeURIComponent(trackingNumber)}`

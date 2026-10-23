@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Link, Outlet } from 'react-router-dom'
 import { LogOut, Menu, X } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
@@ -8,11 +8,14 @@ import { getErrorMessage } from '../../lib/errors'
 import Button from '../ui/Button'
 import NotificationBell from '../domain/NotificationBell'
 
-
 export default function DashboardLayout() {
   const { profile, signOut } = useAuth()
   const [open, setOpen] = useState(false)
   const [signOutError, setSignOutError] = useState<string | null>(null)
+
+  useEffect(() => {
+    document.title = 'DispatchHub | Dashboard'
+  }, [])
 
   if (!profile) return null // ProtectedRoute guarantees a profile before this renders
 
