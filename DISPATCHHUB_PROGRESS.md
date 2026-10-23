@@ -338,3 +338,13 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Components: domain/NotificationBell (in DashboardLayout header), pages/app/Notifications (shared, mounted at <role home>/notifications for all four roles), lib/notifications.ts (labels, notificationRoute, parcelLinkFor).
 - Password: schemas/password.ts, services/passwordService.ts (requestReset, changePassword re-checks current password, setNewPassword), components/domain/ChangePasswordForm, pages/app/Account at /app/account (header name links to it), pages/auth/ForgotPassword (/forgot-password, in PublicOnlyRoute), pages/auth/ResetPassword (/reset-password, OUTSIDE PublicOnlyRoute). Login has 'Forgot password?' link.
 - routes.ts adds forgotPassword, resetPassword. Customer nav Notifications ready.
+
+## Status
+- Batch 0 to 9, 10A: COMPLETE
+- Batch 10B (rate limits, complaint alerts, admin messages, README): code delivered, awaiting test
+- Razorpay: NOT built (user has no test keys). Dev payment only.
+- Next: Batch 11 (final testing and polish)
+
+## Batch 10B notes
+- Migration 0011: table rate_limits (no client grants), client_fingerprint(), check_rate_limit(key,max,window) (internal). track_parcel now volatile + rate limited (60/10 min per client) and returns {rate_limited:true} when blocked. submit_contact_message(name,email,subject,message) -> {ok}|{rate_limited} (5/hour/client, validated); direct INSERT on contact_messages revoked. Trigger complaints_notify -> notifications to origin/destination branch managers and all active admins.
+- Frontend: trackingService/contactService updated for rate limit; messageService (list, markRead); pages/admin/AdminMessages at /app/admin/messages; nav + adminRoutes.messages; CustomerDashboard 'View all' links; README.md written.

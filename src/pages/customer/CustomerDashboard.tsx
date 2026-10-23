@@ -67,8 +67,12 @@ export default function CustomerDashboard() {
 
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             <section className="lg:col-span-2">
-              <h2 className="mb-3 text-lg font-semibold">Recent bookings</h2>
-              {data.recent.length === 0 ? (
+              <div className="mb-3 flex items-baseline justify-between">
+                <h2 className="text-lg font-semibold">Recent bookings</h2>
+                <Link to={customerRoutes.bookings} className="text-sm font-medium text-brand-700 hover:underline">
+                  View all
+                </Link>
+              </div>              {data.recent.length === 0 ? (
                 <EmptyState
                   title="No bookings yet"
                   text="Book your first parcel to see it here with live tracking history."
@@ -115,8 +119,12 @@ export default function CustomerDashboard() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-lg font-semibold">Recent notifications</h2>
-              {data.notifications.length === 0 ? (
+              <div className="mb-3 flex items-baseline justify-between">
+                <h2 className="text-lg font-semibold">Recent notifications</h2>
+                <Link to="/app/customer/notifications" className="text-sm font-medium text-brand-700 hover:underline">
+                  View all
+                </Link>
+              </div>              {data.notifications.length === 0 ? (
                 <p className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
                   Nothing yet. Updates about your parcels will appear here.
                 </p>

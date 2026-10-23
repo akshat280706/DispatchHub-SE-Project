@@ -45,6 +45,8 @@ import AdminSettings from '../pages/admin/AdminSettings'
 import AdminComplaints from '../pages/admin/AdminComplaints'
 import AdminAudit from '../pages/admin/AdminAudit'
 import AdminReports from '../pages/admin/AdminReports'
+import AdminMessages from '../pages/admin/AdminMessages'
+
 
 export const router = createBrowserRouter([
   {
@@ -128,6 +130,7 @@ export const router = createBrowserRouter([
               { path: 'rates', element: <AdminRates /> },
               { path: 'settings', element: <AdminSettings /> },
               { path: 'complaints', element: <AdminComplaints /> },
+              { path: 'messages', element: <AdminMessages /> },
               { path: 'audit', element: <AdminAudit /> },
               { path: 'reports', element: <AdminReports /> },
               { path: 'notifications', element: <Notifications /> },

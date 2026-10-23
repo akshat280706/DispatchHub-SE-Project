@@ -14,6 +14,9 @@ export function isValidTrackingNumber(value: string): boolean {
 async function track(trackingNumber: string): Promise<PublicTracking | null> {
   const { data, error } = await supabase.rpc('track_parcel', { p_tracking_number: trackingNumber })
   if (error) throw new AppError('We could not look up this parcel right now. Please try again.', error.code)
+  if (data && typeof data === 'object' && 'rate_limited' in data) {
+    throw new AppError('Too many lookups from your connection. Please wait a few minutes and try again.', 'rate_limited')
+  }
   return (data as PublicTracking | null) ?? null
 }
 
