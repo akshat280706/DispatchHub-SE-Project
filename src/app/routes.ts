@@ -8,6 +8,8 @@ export const ROUTES = {
   terms: '/terms',
   login: '/login',
   register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
   setupCheck: '/setup-check',
 } as const
 

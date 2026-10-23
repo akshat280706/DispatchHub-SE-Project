@@ -6,6 +6,8 @@ import { ROLE_HOME, ROLE_LABEL, ROLE_NAV } from '../../lib/navigation'
 import { COPYRIGHT_TEXT } from '../../lib/constants'
 import { getErrorMessage } from '../../lib/errors'
 import Button from '../ui/Button'
+import NotificationBell from '../domain/NotificationBell'
+
 
 export default function DashboardLayout() {
   const { profile, signOut } = useAuth()
@@ -82,10 +84,11 @@ export default function DashboardLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <div className="ml-auto flex items-center gap-3">
-            <div className="text-right leading-tight">
+            <NotificationBell />
+            <Link to="/app/account" className="rounded-md px-2 py-1 text-right leading-tight hover:bg-slate-100" title="Account settings">
               <p className="text-sm font-medium text-slate-900">{profile.full_name}</p>
               <p className="text-xs text-slate-500">{ROLE_LABEL[profile.role]}</p>
-            </div>
+            </Link>
             <Button variant="secondary" onClick={handleSignOut}>
               <LogOut className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Sign out</span>

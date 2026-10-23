@@ -15,6 +15,10 @@ import SetupCheck from '../pages/public/SetupCheck'
 import NotFound from '../pages/public/NotFound'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
+import ForgotPassword from '../pages/auth/ForgotPassword'
+import ResetPassword from '../pages/auth/ResetPassword'
+import Account from '../pages/app/Account'
+import Notifications from '../pages/app/Notifications'
 import CustomerDashboard from '../pages/customer/CustomerDashboard'
 import BookParcel from '../pages/customer/BookParcel'
 import BookingDetail from '../pages/customer/BookingDetail'
@@ -57,11 +61,14 @@ export const router = createBrowserRouter([
     ],
   },
   { path: ROUTES.setupCheck, element: <SetupCheck /> },
+  // The emailed reset link signs the user in, so this page must NOT be inside PublicOnlyRoute
+  { path: ROUTES.resetPassword, element: <ResetPassword /> },
   {
     element: <PublicOnlyRoute />,
     children: [
       { path: ROUTES.login, element: <Login /> },
       { path: ROUTES.register, element: <Register /> },
+      { path: ROUTES.forgotPassword, element: <ForgotPassword /> },
     ],
   },
   {
@@ -71,6 +78,7 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
+          { path: '/app/account', element: <Account /> },
           {
             path: ROLE_HOME.CUSTOMER,
             element: <RoleRoute roles={['CUSTOMER']} />,
@@ -81,6 +89,7 @@ export const router = createBrowserRouter([
               { path: 'bookings/:id', element: <BookingDetail /> },
               { path: 'bookings/:id/pay', element: <PayBooking /> },
               { path: 'complaints', element: <CustomerComplaints /> },
+              { path: 'notifications', element: <Notifications /> },
               { path: 'profile', element: <Profile /> },
             ],
           },
@@ -92,6 +101,7 @@ export const router = createBrowserRouter([
               { path: 'assignments', element: <Assignments /> },
               { path: 'assignments/:id', element: <AssignmentDetail /> },
               { path: 'history', element: <DeliveryHistory /> },
+              { path: 'notifications', element: <Notifications /> },
             ],
           },
           {
@@ -105,6 +115,7 @@ export const router = createBrowserRouter([
               { path: 'personnel', element: <ManagerPersonnel /> },
               { path: 'complaints', element: <ManagerComplaints /> },
               { path: 'reports', element: <ManagerReports /> },
+              { path: 'notifications', element: <Notifications /> },
             ],
           },
           {
@@ -119,6 +130,7 @@ export const router = createBrowserRouter([
               { path: 'complaints', element: <AdminComplaints /> },
               { path: 'audit', element: <AdminAudit /> },
               { path: 'reports', element: <AdminReports /> },
+              { path: 'notifications', element: <Notifications /> },
             ],
           },
         ],

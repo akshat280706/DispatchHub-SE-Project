@@ -56,6 +56,11 @@ export default function Login() {
           error={errors.password?.message}
           {...register('password')}
         />
+        <div className="text-right">
+          <Link to={ROUTES.forgotPassword} className="text-sm font-medium text-brand-700 hover:underline">
+            Forgot password?
+          </Link>
+        </div>
         <Button type="submit" loading={isSubmitting} className="w-full">
           Sign in
         </Button>

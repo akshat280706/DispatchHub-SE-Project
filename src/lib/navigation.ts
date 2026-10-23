@@ -26,7 +26,7 @@ export const ROLE_NAV: Record<UserRole, NavItem[]> = {
     { label: 'Book parcel', to: '/app/customer/book', ready: true },
     { label: 'My bookings', to: '/app/customer/bookings', ready: true },
     { label: 'Complaints', to: '/app/customer/complaints', ready: true },
-    { label: 'Notifications', to: '/app/customer/notifications', ready: false },
+    { label: 'Notifications', to: '/app/customer/notifications', ready: true },
     { label: 'Profile', to: '/app/customer/profile', ready: false },
   ],
   DELIVERY_PERSONNEL: [

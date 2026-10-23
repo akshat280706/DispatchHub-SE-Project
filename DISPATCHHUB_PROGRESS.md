@@ -327,3 +327,14 @@ As defined in Batch 0 section 3 (src/app, lib, types, schemas, context, services
 - Nav: every admin item ready.
 - Gaps: no create/delete of settings, no rate history, no change/forgot password.
 
+## Status
+- Batch 0 to 9: COMPLETE
+- Batch 10A (notifications, bell, change/forgot/reset password): code delivered, awaiting test
+- Next: Batch 10B (rate limiting for tracking + contact, manager alert on new complaint, search/filter polish, optional Razorpay test mode, README)
+
+## Batch 10A notes
+- No new SQL. Supabase Auth URL config required for reset: Site URL http://localhost:5173, redirect URL http://localhost:5173/reset-password. Built-in email is rate-limited and only sends to org members, so use real SMTP for more.
+- notificationService: listRecent, list(filters {unreadOnly,type,page,pageSize}), unreadCount, markRead(ids), markAllRead; announceNotificationsChanged() fires window event NOTIFICATIONS_CHANGED; hook useUnreadCount(userId) polls every 30s and on navigation.
+- Components: domain/NotificationBell (in DashboardLayout header), pages/app/Notifications (shared, mounted at <role home>/notifications for all four roles), lib/notifications.ts (labels, notificationRoute, parcelLinkFor).
+- Password: schemas/password.ts, services/passwordService.ts (requestReset, changePassword re-checks current password, setNewPassword), components/domain/ChangePasswordForm, pages/app/Account at /app/account (header name links to it), pages/auth/ForgotPassword (/forgot-password, in PublicOnlyRoute), pages/auth/ResetPassword (/reset-password, OUTSIDE PublicOnlyRoute). Login has 'Forgot password?' link.
+- routes.ts adds forgotPassword, resetPassword. Customer nav Notifications ready.
