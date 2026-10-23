@@ -29,7 +29,7 @@ export const bookingSchema = z
     delivery_city: z.string().trim().min(2, 'Enter the delivery city').max(100),
     delivery_pincode: z.string().trim().regex(/^[0-9]{6}$/, 'Pincode must be 6 digits'),
 
-    category: z.string().refine((v) => CATEGORY_VALUES.includes(v), 'Select a category'),
+    category: z.string().refine((v): boolean => CATEGORY_VALUES.includes(v), 'Select a category'),
     weight_kg: z
       .string()
       .trim()
@@ -40,7 +40,9 @@ export const bookingSchema = z
     description: z.string().trim().max(500, 'Keep the description under 500 characters'),
     special_instructions: z.string().trim().max(500, 'Keep the instructions under 500 characters'),
 
-    payment_method: z.string().refine((v) => v === 'DEV_SIMULATED' || v === 'CASH_ON_PICKUP', 'Select a payment method'),
+    payment_method: z
+      .string()
+      .refine((v): boolean => v === 'DEV_SIMULATED' || v === 'CASH_ON_PICKUP', 'Select a payment method'),
   })
   .refine((v) => v.origin_branch_id !== v.destination_branch_id, {
     path: ['destination_branch_id'],
