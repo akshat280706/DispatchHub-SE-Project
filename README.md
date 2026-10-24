@@ -55,8 +55,6 @@ one database:
 - **Branch managers** run the parcels moving through their branch and assign delivery partners.
 - **Administrators** manage users, branches, shipping rates, settings and system-wide reports.
 
-> This project uses fictional branches and demo data. Payments run in a **development mode: no real money is processed**.
-> Delivery codes are shown in the customer's app and are **not sent by SMS or email**.
 
 ---
 
@@ -209,9 +207,6 @@ DispatchHub-SE-Project/
 │   ├── migrations/           # 0001 to 0011, run in order
 │   ├── functions/            # dev-payment-simulate, admin-create-user
 │   ├── tests/                # e2e_parcel_journey.sql
-│   ├── seed.sql              # branches, rates, settings
-│   ├── seed_demo_staff.sql
-│   └── seed_demo_parcels.sql
 ├── vercel.json               # single-page-app rewrite
 ├── .env.example
 └── README.md
@@ -271,17 +266,6 @@ In the Supabase **SQL Editor**, run each file **once**, in this order:
 | 10 | `migrations/0009_admin_user_management.sql` | Audited user changes |
 | 11 | `migrations/0010_admin_config.sql` | Audited branch, rate and setting changes |
 | 12 | `migrations/0011_rate_limits_complaint_alerts.sql` | Rate limiting, contact function, complaint alerts |
-
-### Demo data (development only)
-1. Create six users in **Authentication → Users → Add user** (auto-confirm), using a password of your choice:
-   `admin@`, `manager.mum@`, `manager.pun@`, `rider.mum@`, `rider.pun@`, `customer@` (all `@dispatchhub.test`).
-2. Run `supabase/seed_demo_staff.sql`.
-3. Run `supabase/tests/e2e_parcel_journey.sql`. It must report `ALL STEPS PASSED` and saves nothing.
-4. Run `supabase/seed_demo_parcels.sql` to create 8 demo parcels at different stages.
-
-More staff (Delhi, Bengaluru, extra riders) are created from the **Admin → Users** page.
-
-> The `.test` accounts are for development. Use strong, private passwords on any public deployment.
 
 ---
 
@@ -380,17 +364,6 @@ Route guards only improve the user experience. The real enforcement is Row Level
 
 ---
 
-## 🧪 Testing
-
-- `supabase/tests/e2e_parcel_journey.sql` runs the whole parcel journey inside the database, including negative cases
-  (wrong branch, wrong rider, missing photo, wrong code, direct `DELIVERED`). It always rolls back.
-- **Manual end-to-end:** register a customer, book, pay (development payment), assign pickup as the origin manager,
-  pick up as the rider, dispatch, confirm arrival as the destination manager, assign delivery, start delivery, upload
-  a photo and enter the customer's code as the rider, then see **Delivered** as the customer and on public tracking.
-- **Security checks:** SQL queries in the final-testing notes verify RLS is on everywhere, which tables the browser can
-  write to, and which functions are callable by anonymous users.
-
----
 
 ## 🚢 Deployment
 
@@ -418,17 +391,6 @@ inactivity, so open the site before a demo.
 
 ---
 
-## 🛣️ Roadmap
-
-- [ ] Real payment provider in test mode (for example Razorpay)
-- [ ] SMS or email delivery codes and notifications
-- [ ] Realtime notifications
-- [ ] Signature capture as a second proof type
-- [ ] Code-splitting to reduce the bundle size
-- [ ] Volumetric pricing using dimensions
-- [ ] Parcel scanning (barcode or QR) for branch hand-offs
-
----
 
 ## 🤝 Contributing
 
@@ -442,12 +404,12 @@ Please keep database changes in a new numbered migration and give every new func
 
 ---
 
-## 👨‍💻 Authors
+;; ## 👨‍💻 Authors
 
-- **Akshat Chauhan** - [GitHub](https://github.com/akshat280706)
-- **Teammate Name** - [GitHub](https://github.com/their-username)
+;; - **Akshat Chauhan** - [GitHub](https://github.com/akshat280706)
+;; - **Teammate Name** - [GitHub](https://github.com/their-username)
 
----
+;; ---
 
 ## 🙏 Acknowledgments
 
@@ -461,15 +423,12 @@ Please keep database changes in a new numbered migration and give every new func
 
 ## 🔗 Links
 
-- **Live Demo:** https://YOUR-APP.vercel.app
+- **Live Demo:** dispatch-hub-se-project.vercel.app
 - **Repository:** https://github.com/akshat280706/DispatchHub-SE-Project
 
 ---
 
 <div align="center">
 
-Made with ❤️ for the Software Engineering course
-
 ⭐ Star this repo if you find it helpful!
-
 </div>
