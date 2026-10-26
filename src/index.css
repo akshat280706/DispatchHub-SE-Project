@@ -1,24 +1,24 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 @import "@fontsource-variable/inter";
 
 @theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif; */
 
   /* Navy: navigation and headings */
-  --color-navy-950: #0a1222;
+  /* --color-navy-950: #0a1222;
   --color-navy-900: #0f1c34;
   --color-navy-800: #162a4a;
-  --color-navy-700: #1f3a63;
+  --color-navy-700: #1f3a63; */
 
   /* Teal: brand accent */
-  --color-brand-50: #effaf9;
+  /* --color-brand-50: #effaf9;
   --color-brand-100: #d3f3f0;
   --color-brand-500: #14a8a0;
   --color-brand-600: #0e8f88;
   --color-brand-700: #0c726d;
-}
+} */
 
-@layer base {
+/* @layer base {
   html {
     -webkit-text-size-adjust: 100%;
   }
@@ -30,5 +30,115 @@
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-600;
+  }
+} */
+
+
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand */
+  --color-ink: #202B33;
+  --color-muted: #718096;
+  --color-surface: #F7F8F5;
+
+  --color-navy-950: #0E202D;
+  --color-navy-900: #142B3B;
+  --color-navy-800: #1C3A50;
+  --color-navy-700: #26485F;
+
+  --color-lime: #C6F36B;
+  --color-lime-dark: #B4E24C;
+
+  /* "brand" is now midnight navy (buttons, links, icons). brand-500 is the lime accent. */
+  --color-brand-50: #F4FADF;
+  --color-brand-100: #E6F5B8;
+  --color-brand-500: #C6F36B;
+  --color-brand-600: #142B3B;
+  --color-brand-700: #0E202D;
+
+  /* Neutrals */
+  --color-slate-50: #F7F8F5;
+  --color-slate-100: #EEF1F3;
+  --color-slate-200: #E2E8ED;
+  --color-slate-300: #CBD5DC;
+  --color-slate-400: #A0AEBA;
+  --color-slate-500: #718096;
+  --color-slate-600: #5B6A78;
+  --color-slate-700: #3D4B57;
+  --color-slate-800: #2A363F;
+  --color-slate-900: #202B33;
+
+  /* Success */
+  --color-emerald-50: #E8F4EE;
+  --color-emerald-200: #BFE0CF;
+  --color-emerald-600: #23845B;
+  --color-emerald-700: #1D6F4D;
+  --color-emerald-800: #19603F;
+  --color-emerald-900: #134A31;
+
+  /* Warning */
+  --color-amber-50: #FCF3E1;
+  --color-amber-200: #F0D49A;
+  --color-amber-600: #D99119;
+  --color-amber-700: #B97A12;
+  --color-amber-800: #8F5F10;
+  --color-amber-900: #6F490D;
+
+  /* Error */
+  --color-red-50: #FBEAEA;
+  --color-red-500: #D94F4F;
+  --color-red-600: #D94F4F;
+  --color-red-700: #BC3F3F;
+  --color-red-800: #8E2E2E;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply text-navy-900 tracking-tight;
+  }
+  ::selection {
+    background: #C6F36B;
+    color: #142B3B;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-navy-900;
+  }
+  input,
+  select,
+  textarea {
+    accent-color: #142B3B;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: #142B3B;
+    box-shadow: 0 0 0 3px rgba(198, 243, 107, 0.6);
+  }
+  /* Text links get a lime underline */
+  a[class*="text-brand-700"] {
+    text-decoration-line: underline;
+    text-decoration-color: #C6F36B;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+
+@layer components {
+  /* Subtle elevation for every bordered white card */
+  .rounded-lg.border.bg-white {
+    box-shadow: 0 1px 2px rgba(20, 43, 59, 0.04), 0 1px 3px rgba(20, 43, 59, 0.05);
   }
 }
