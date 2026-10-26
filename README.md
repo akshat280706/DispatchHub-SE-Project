@@ -404,13 +404,6 @@ Please keep database changes in a new numbered migration and give every new func
 
 ---
 
-;; ## 👨‍💻 Authors
-
-;; - **Akshat Chauhan** - [GitHub](https://github.com/akshat280706)
-;; - **Teammate Name** - [GitHub](https://github.com/their-username)
-
-;; ---
-
 ## 🙏 Acknowledgments
 
 - Icons by [Lucide](https://lucide.dev/)
