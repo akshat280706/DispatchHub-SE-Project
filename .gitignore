@@ -29,3 +29,6 @@ DISPATCHHUB_PROGRESS.md
 /test-results/
 /playwright/.cache/
 /playwright/.auth/
+
+# Vitest
+/coverage/
