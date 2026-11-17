@@ -23,3 +23,9 @@ npm-debug.log*
 *.sw?
 
 DISPATCHHUB_PROGRESS.md
+
+# Playwright
+/playwright-report/
+/test-results/
+/playwright/.cache/
+/playwright/.auth/
