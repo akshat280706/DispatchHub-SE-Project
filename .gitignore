@@ -32,3 +32,5 @@ DISPATCHHUB_PROGRESS.md
 
 # Vitest
 /coverage/
+/test-results/
+/playwright-report/
